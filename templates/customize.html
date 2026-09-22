@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% block title %}Customize {{product.name}}{% endblock %}
+{% block content %}
+<section class="page-head compact"><div class="eyebrow">STEP 2 OF 5</div><h1>{% if product.category=='snacks' %}Add {{product.name}}{% else %}Customize your {{product.name}}{% endif %}</h1><p>{% if product.category=='snacks' %}No customization needed — just add it to your order.{% else %}Make it exactly how you like it.{% endif %}</p></section>
+<form method="post" class="customize-layout">
+<div class="custom-card">
+  <div class="big-product-art"><img src="{{ product_image(product.name) }}" alt="{{product.name}}"></div><h2>{{product.name}}</h2><p>{{product.description}}</p><div class="base-price">Price: ₹{{'%.0f'|format(product.price)}}</div>
+</div>
+<div class="custom-card options">
+{% if product.category=='snacks' %}
+  <div class="snack-add-card"><span>🍪</span><div><h3>Perfect companion</h3><p>This snack is ready to add. You can change the quantity from your cart.</p></div></div>
+{% else %}
+  <h3>Size</h3><div class="option-grid">{% for x in ['Small','Medium','Large'] %}<label><input type="radio" name="size" value="{{x}}" {% if x=='Medium' %}checked{% endif %}><span>{{x}}{% if x=='Medium' %} +₹10{% elif x=='Large' %} +₹20{% endif %}</span></label>{% endfor %}</div>
+  <h3>Sugar</h3><div class="option-grid">{% for x in ['No Sugar','Less Sugar','Normal','Extra Sugar'] %}<label><input type="radio" name="sugar" value="{{x}}" {% if x=='Normal' %}checked{% endif %}><span>{{x}}</span></label>{% endfor %}</div>
+  <h3>Milk</h3><div class="option-grid">{% for x in ['Regular','Low Fat','Soy Milk'] %}<label><input type="radio" name="milk" value="{{x}}" {% if x=='Regular' %}checked{% endif %}><span>{{x}}</span></label>{% endfor %}</div>
+  {% if product.category=='cold' %}
+  <h3>Ice</h3><div class="option-grid">{% for x in ['Less Ice','Normal Ice','Extra Ice'] %}<label><input type="radio" name="ice" value="{{x}}" {% if x=='Normal Ice' %}checked{% endif %}><span>{{x}}</span></label>{% endfor %}</div>
+  {% else %}
+  <h3>Temperature</h3><div class="option-grid">{% for x in ['Normal','Hot','Extra Hot'] %}<label><input type="radio" name="temperature" value="{{x}}" {% if x=='Hot' %}checked{% endif %}><span>{{x}}</span></label>{% endfor %}</div>
+  {% endif %}
+  <h3>Add-ons</h3><div class="option-grid">{% for x,price in [('Extra Shot',20),('Chocolate',10),('Whipped Cream',15),('Ice Cream',20),('Extra Milk',10)] %}<label><input type="checkbox" name="addons" value="{{x}}"><span>{{x}} +₹{{price}}</span></label>{% endfor %}</div>
+{% endif %}
+  <button class="primary-btn wide" type="submit">{% if product.category=='snacks' %}ADD TO CART →{% else %}ADD TO CART →{% endif %}</button>
+</div>
+</form>
+{% endblock %}

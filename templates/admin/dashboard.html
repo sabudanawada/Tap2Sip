@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Admin{% endblock %}
+{% block content %}
+<div class="admin-shell"><aside class="sidebar"><div class="brand">☕ Tap2Sip</div><a class="active" href="{{url_for('admin_dashboard')}}">Dashboard</a><a href="{{url_for('admin_orders')}}">Orders</a><a href="{{url_for('admin_products')}}">Products</a><a href="{{url_for('admin_inventory')}}">Inventory</a><a href="{{url_for('admin_reports')}}">Reports</a><a href="{{url_for('admin_logout')}}">Logout</a></aside>
+<section class="admin-main"><div class="admin-head"><div><div class="eyebrow">OVERVIEW</div><h1>Dashboard</h1></div><a class="secondary-btn" href="{{url_for('menu')}}">View Kiosk</a></div>
+<div class="stats-grid"><div class="stat"><small>ORDERS</small><b>{{stats.orders}}</b></div><div class="stat"><small>REVENUE</small><b>₹{{'%.0f'|format(stats.revenue)}}</b></div><div class="stat"><small>ONLINE PAYMENTS</small><b>{{stats.online}}</b></div><div class="stat"><small>CASH PAYMENTS</small><b>{{stats.cash}}</b></div></div>
+<div class="admin-grid"><div class="panel"><h2>Popular beverages</h2>{% for p in popular %}<div class="bar-row"><span>{{p.name}}</span><b>{{p.qty}}</b></div>{% else %}<p>No orders yet.</p>{% endfor %}</div>
+<div class="panel"><h2>Low stock alerts</h2>{% for x in low %}<div class="alert-row">⚠ {{x.ingredient}} — {{x.quantity}}{{x.unit}} left</div>{% else %}<p>All stock levels look healthy.</p>{% endfor %}</div></div>
+<div class="panel"><h2>Recent orders</h2><table><tr><th>Order</th><th>Total</th><th>Payment</th><th>Status</th></tr>{% for o in recent %}<tr><td>{{o.order_number}}</td><td>₹{{'%.2f'|format(o.total)}}</td><td>{{o.payment_method}}</td><td><span class="badge">{{o.status}}</span></td></tr>{% endfor %}</table></div>
+</section></div>{% endblock %}

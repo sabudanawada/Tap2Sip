@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Order Status{% endblock %}
+{% block content %}
+<section class="page-head compact"><div class="eyebrow">ORDER TRACKING</div><h1>{{order.order_number}}</h1><p>We are preparing your beverage.</p></section>
+<div class="status-card">
+{% set statuses=['Confirmed','Preparing','Ready','Completed'] %}
+{% for s in statuses %}<div class="status-step {% if statuses.index(s)<=statuses.index(order.status) %}done{% endif %}"><div class="status-dot">{% if statuses.index(s)<=statuses.index(order.status) %}✓{% else %}{{loop.index}}{% endif %}</div><b>{{s}}</b></div>{% endfor %}
+</div>
+<div class="order-message">{% if order.status=='Ready' %}🎉 Your beverage is ready!{% elif order.status=='Preparing' %}☕ Your beverage is being prepared...{% elif order.status=='Completed' %}Enjoy your drink!{% else %}✓ Order confirmed. We will start preparing it shortly.{% endif %}</div>
+<a class="primary-btn" href="{{url_for('index')}}">BACK TO TAP2SIP</a>
+{% endblock %}

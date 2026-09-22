@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Cart{% endblock %}
+{% block content %}
+<section class="page-head compact"><div class="eyebrow">STEP 3 OF 5</div><h1>Your order.</h1><p>Review your drinks and snacks before payment.</p></section>
+<div class="cart-layout">
+<div class="cart-list">
+{% if cart %}
+{% for item in cart %}
+<div class="cart-item"><img class="cart-product-img" src="{{ product_image(item.name) }}" alt="{{item.name}}"><div class="cart-main"><h3>{{item.name}}</h3><p>{% if item.size %}{{item.size}} · {{item.sugar}} · {{item.milk}}{% endif %}{% if item.addons %} · {{item.addons|join(', ')}}{% endif %}</p>
+<form method="post" action="{{url_for('cart_update')}}" class="qty"><input type="hidden" name="index" value="{{loop.index0}}"><button name="action" value="minus">−</button><b>{{item.quantity}}</b><button name="action" value="plus">+</button><button class="remove" name="action" value="remove">Remove</button></form></div><strong>₹{{'%.2f'|format(item.price*item.quantity)}}</strong></div>
+{% endfor %}
+<div class="cart-actions"><a class="secondary-btn" href="{{url_for('menu')}}">+ ADD MORE</a><form method="post" action="{{url_for('coupon')}}" class="coupon"><input name="code" placeholder="Coupon code"><button class="secondary-btn" type="submit">APPLY</button></form></div>
+{% else %}<div class="empty"><div>🛒</div><h2>Your cart is empty.</h2><a class="primary-btn" href="{{url_for('menu')}}">EXPLORE MENU</a></div>{% endif %}
+</div>
+{% if cart %}<aside class="summary"><h2>Order summary</h2><div><span>Subtotal</span><b>₹{{'%.2f'|format(subtotal)}}</b></div><div><span>Discount</span><b>- ₹{{'%.2f'|format(discount)}}</b></div><div><span>Tax</span><b>₹{{'%.2f'|format(tax)}}</b></div><hr><div class="total"><span>Total</span><b>₹{{'%.2f'|format(total)}}</b></div><a class="primary-btn wide" href="{{url_for('payment')}}">PROCEED TO PAYMENT →</a></aside>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Receipt{% endblock %}
+{% block content %}
+<section class="success-head"><div class="success-icon">✓</div><div class="eyebrow">PAYMENT SUCCESSFUL</div><h1>Order {{order.order_number}} confirmed.</h1><p>Your drink is now in the preparation queue.</p></section>
+<div class="receipt-wrap"><div class="receipt">
+<div class="receipt-brand">☕ TAP2SIP</div><small>Smart Self-Service Beverage Kiosk</small><hr>
+<div class="receipt-meta"><span>Order {{order.order_number}}</span><span>{{order.created_at}}</span></div>
+{% for item in items %}<div class="receipt-line product-row"><span><img class="receipt-product-img" src="{{ product_image(item.name) }}" alt="{{item.name}}">{{item.name}} × {{item.quantity}}<small>{{item.customization}}</small></span><b>₹{{'%.2f'|format(item.price*item.quantity)}}</b></div>{% endfor %}
+<hr><div class="receipt-line"><span>Subtotal</span><b>₹{{'%.2f'|format(subtotal)}}</b></div>
+<div class="receipt-line"><span>Discount</span><b>-₹{{'%.2f'|format(order.discount)}}</b></div><div class="receipt-line"><span>Tax</span><b>₹{{'%.2f'|format(order.tax)}}</b></div>
+<div class="receipt-total"><span>TOTAL</span><b>₹{{'%.2f'|format(order.total)}}</b></div>
+<div class="payment-info">Payment: {{order.payment_method|upper}}<br>Transaction: {{order.transaction_id}}{% if change is not none %}<br>Change returned: ₹{{'%.2f'|format(change)}}{% endif %}</div>
+<div class="receipt-thanks">Thank you! Enjoy your drink. ☕</div>
+</div></div>
+<div class="action-row"><a class="primary-btn" href="{{url_for('order_status',order_number=order.order_number)}}">TRACK ORDER</a><a class="secondary-btn" href="{{url_for('receipt_pdf',order_number=order.order_number)}}">DOWNLOAD PDF</a><button class="secondary-btn" onclick="window.print()">PRINT RECEIPT</button></div>
+<section class="feedback-card"><h2>How was your experience?</h2><p class="feedback-subtitle">Tap a star to rate your Tap2Sip experience.</p><form method="post" action="{{url_for('feedback')}}"><input type="hidden" name="order_number" value="{{order.order_number}}"><div class="stars" role="radiogroup" aria-label="Rate your experience">{% for i in range(1,6) %}<input id="star{{i}}" type="radio" name="rating" value="{{i}}" required><label for="star{{i}}" title="{{i}} star{{ 's' if i != 1 else '' }}">★</label>{% endfor %}</div><div id="ratingText" class="rating-text">Select a rating</div><input type="hidden" name="drink_rating" value="5"><textarea name="comment" placeholder="Tell us what you think (optional)"></textarea><button class="secondary-btn" type="submit">SUBMIT FEEDBACK</button></form></section>
+{% endblock %}

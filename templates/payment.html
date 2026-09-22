@@ -1,0 +1,41 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Payment{% endblock %}
+{% block content %}
+<section class="page-head compact"><div class="eyebrow">STEP 4 OF 5</div><h1>Choose how to pay.</h1><p>Total payable: <strong>₹{{'%.2f'|format(total)}}</strong></p></section>
+
+{% if show_upi_qr %}
+<section class="payment-focus">
+  <div class="payment-focus-card">
+    <div class="payment-icon">📱</div>
+    <div class="eyebrow">UPI PAYMENT</div>
+    <h2>Scan to pay ₹{{'%.2f'|format(total)}}</h2>
+    <p>Open any UPI app, scan the QR code and complete the payment.</p>
+    <div class="upi-qr-wrap"><img src="{{url_for('upi_qr', amount='%.2f'|format(total))}}" alt="Tap2Sip UPI payment QR code"></div>
+    <div class="upi-id">UPI ID: <strong>{{upi_id}}</strong></div>
+        <form method="post"><input type="hidden" name="payment_method" value="upi_confirm"><button class="primary-btn wide" type="submit">PAYMENT COMPLETED ✓</button></form>
+    <a class="text-link center" href="{{url_for('payment')}}">← Choose another method</a>
+  </div>
+</section>
+{% elif show_card_pin %}
+<section class="payment-focus">
+  <div class="payment-focus-card card-pin-card">
+    <div class="payment-icon">💳</div>
+    <div class="eyebrow">CARD PAYMENT</div>
+    <h2>Enter your PIN</h2>
+    <form method="post" class="pin-form">
+      <input type="hidden" name="payment_method" value="card">
+      <label for="card_pin">4–6 digit PIN</label>
+      <input id="card_pin" name="card_pin" type="password" inputmode="numeric" pattern="[0-9]{4,6}" minlength="4" maxlength="6" autocomplete="off" placeholder="••••" required autofocus>
+      <button class="primary-btn wide" type="submit">CONFIRM CARD PAYMENT →</button>
+    </form>
+    <a class="text-link center" href="{{url_for('payment')}}">← Choose another method</a>
+  </div>
+</section>
+{% else %}
+<form method="post" class="payment-grid">
+<button name="payment_method" value="upi" class="pay-card"><span>📱</span><h2>UPI</h2><p>Scan a QR code and pay</p><b>QR PAYMENT</b></button>
+<button name="payment_method" value="card" class="pay-card"><span>💳</span><h2>Card</h2><p>Credit or debit card</p><b>PIN PROTECTED</b></button>
+<button name="payment_method" value="netbanking" class="pay-card"><span>🌐</span><h2>Net Banking</h2><p>Simulated online payment</p></button>
+<button name="payment_method" value="cash" class="pay-card cash"><span>💵</span><h2>Exact Cash</h2><p>Pay with cash and get automatic change</p></button>
+</form>
+{% endif %}
+{% endblock %}

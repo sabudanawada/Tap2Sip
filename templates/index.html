@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Welcome{% endblock %}
+{% block content %}
+<section class="hero kiosk">
+  <div class="hero-copy">
+    <div class="eyebrow">SMART SELF-SERVICE BEVERAGE KIOSK</div>
+    <h1>Tap. Choose.<br><span>Pay. Sip.</span></h1>
+    <p>Your coffee, tea, cold coffee or snack — customized your way.</p>
+    <div class="hero-actions"><a class="primary-btn huge" href="{{ url_for('menu') }}">CUSTOMER ORDERING →</a><a class="secondary-btn huge" href="{{ url_for('admin_login') }}">🔐 ADMIN PORTAL</a></div>
+    <div class="chips"><span>☕ Coffee</span><span>🍵 Tea</span><span>🧊 Cold Coffee</span><span>🍪 Snacks</span></div>
+  </div>
+  <div class="hero-cup"><div class="cup">☕</div><div class="orbit">TAP2SIP</div></div>
+</section>
+<section class="section">
+  <div class="section-head"><div><div class="eyebrow">EXPLORE</div><h2>Made for every mood.</h2></div><a class="text-link" href="{{ url_for('menu') }}">View full menu →</a></div>
+  <div class="category-grid">
+    <a class="category-card coffee" href="{{ url_for('menu') }}#coffee"><span>☕</span><h3>Hot Coffee</h3><p>Rich, warm & freshly customized</p></a>
+    <a class="category-card tea" href="{{ url_for('menu') }}#tea"><span>🍵</span><h3>Tea</h3><p>Classic Indian and refreshing blends</p></a>
+    <a class="category-card cold" href="{{ url_for('menu') }}#cold"><span>🧊</span><h3>Cold Coffee</h3><p>Chilled, creamy & indulgent</p></a>
+    <a class="category-card snacks" href="{{ url_for('menu') }}#snacks"><span>🍪</span><h3>Snacks</h3><p>Cookies & biscuits to pair with your drink</p></a>
+  </div>
+</section>
+<section class="section offer-strip"><div><span class="eyebrow">TODAY'S TIP</span><h2>Coffee + cookie.</h2><p>Pair your favourite drink with a fresh snack.</p></div><a class="secondary-btn" href="{{ url_for('menu') }}#snacks">VIEW SNACKS</a></section>
+{% if popular %}
+<section class="section"><div class="section-head"><div><div class="eyebrow">LIVE FROM ORDERS</div><h2>Popular right now.</h2></div></div>
+<div class="mini-grid">{% for p in popular %}<div class="mini-card"><img src="{{ product_image(p.name) }}" alt="{{p.name}}"><span>⭐</span><b>{{p.name}}</b><small>{{p.qty}} ordered</small></div>{% endfor %}</div></section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Cash Payment{% endblock %}
+{% block content %}
+<section class="page-head compact"><div class="eyebrow">CASH PAYMENT</div><h1>Keep it simple.</h1><p>Tap denominations or pay the exact amount.</p></section>
+<form method="post" id="cashForm" class="cash-box">
+<div class="cash-total">TOTAL <strong>₹{{'%.2f'|format(total)}}</strong></div>
+<input type="hidden" name="amount" id="amountInput" value="{{amount}}">
+<button type="button" class="exact-btn" onclick="exactCash({{total}})">PAY EXACT CASH ₹{{'%.2f'|format(total)}}</button>
+<div class="cash-amount">Amount received: <strong id="amountDisplay">₹{{'%.2f'|format(amount)}}</strong></div>
+<div class="denoms">{% for x in [10,20,50,100,200,500] %}<button type="button" onclick="addCash({{x}})">₹{{x}}</button>{% endfor %}</div>
+<div class="cash-change">Change: <strong id="changeDisplay">₹{{'%.2f'|format([amount-total,0]|max)}}</strong></div>
+{% if error %}<div class="alert error">{{error}}</div>{% endif %}
+<button class="primary-btn wide" type="submit">CONFIRM CASH PAYMENT →</button>
+<a class="text-link center" href="{{url_for('payment')}}">← Change payment method</a>
+</form>
+<script>window.cashTotal={{total}};</script>
+{% endblock %}

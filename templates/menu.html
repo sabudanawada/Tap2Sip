@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}Tap2Sip | Menu{% endblock %}
+{% block content %}
+<section class="page-head"><div class="eyebrow">STEP 1 OF 5</div><h1>What are you sipping today?</h1><p>Choose a drink or a snack, then customize your order.</p></section>
+<div class="filter-row"><a href="#coffee">☕ Hot Coffee</a><a href="#tea">🍵 Tea</a><a href="#cold">🧊 Cold Coffee</a><a href="#snacks">🍪 Snacks</a></div>
+{% for cat,label,icon in [('coffee','Hot Coffee','☕'),('tea','Tea','🍵'),('cold','Cold Coffee','🧊'),('snacks','Snacks','🍪')] %}
+<section class="menu-section" id="{{cat}}"><div class="section-head"><h2>{{icon}} {{label}}</h2></div>
+<div class="product-grid">
+{% for p in products if p.category==cat %}
+<div class="product-card {% if not p.available %}disabled{% endif %}">
+  <div class="product-art"><img src="{{ product_image(p.name) }}" alt="{{p.name}}" loading="lazy"></div>
+  <div class="product-info"><h3>{{p.name}}</h3><p>{{p.description}}</p>
+  <div class="price-row"><strong>₹{{'%.0f'|format(p.price)}}</strong>{% if p.available %}<a class="primary-btn small" href="{{url_for('customize',product_id=p.id)}}">{% if p.category=='snacks' %}ADD{% else %}CUSTOMIZE{% endif %}</a>{% else %}<span class="sold">UNAVAILABLE</span>{% endif %}</div></div>
+</div>
+{% endfor %}
+</div></section>
+{% endfor %}
+{% endblock %}
