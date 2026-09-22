@@ -501,6 +501,8 @@ def api_order(order_number):
     db=get_db(); o=db.execute("SELECT * FROM orders WHERE order_number=?",(order_number,)).fetchone(); db.close()
     return jsonify(dict(o)) if o else (jsonify({"error":"not found"}),404)
 
+# Initialize database when the app starts
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
